@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Lyly 🤍</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;600&display=swap');
+
+* {
+  box-sizing: border-box;
+  font-family: 'Cairo', sans-serif;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: white;
+  overflow-x: hidden;
+}
+
+/* خلفية صور متحركة */
+.background {
+  position: fixed;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: blur(18px) brightness(0.6);
+  transition: background-image 2s ease-in-out;
+  z-index: -2;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  z-index: -1;
+}
+
+/* الحاوية */
+.container {
+  width: 92%;
+  max-width: 420px;
+  margin: 60px auto;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px);
+  padding: 28px;
+  border-radius: 22px;
+  text-align: center;
+}
+
+/* دخول */
+input, button {
+  width: 100%;
+  padding: 14px;
+  margin: 10px 0;
+  border-radius: 14px;
+  border: none;
+  font-size: 15px;
+}
+
+button {
+  background: #f2b8c6;
+  color: #222;
+}
+
+/* كتابة */
+.line {
+  opacity: 0;
+  margin: 14px 0;
+  line-height: 1.8;
+  animation: show 1s forwards;
+}
+
+@keyframes show {
+  to { opacity: 1; }
+}
+
+/* صور */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin-top: 20px;
+}
+
+.gallery img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+/* فيديو */
+video {
+  width: 100%;
+  border-radius: 14px;
+  margin: 14px 0;
+}
+</style>
+</head>
+
+<body>
+
+<div class="background" id="bg"></div>
+<div class="overlay"></div>
+
+<audio id="music" loop>
+  <source src="music/song.mp3">
+</audio>
+
+<div class="container" id="login">
+  <h2>Welcome 🤍</h2>
+  <input id="name" placeholder="Your name">
+  <input id="date" placeholder="Birth date">
+  <button onclick="enter()">Enter</button>
+</div>
+
+<div class="container" id="content" style="display:none">
+
+  <h2>Lyly 🤍</h2>
+
+  <div id="text"></div>
+
+  <div class="gallery" id="gallery"></div>
+
+  <div id="videos"></div>
+
+  <p style="margin-top:30px">
+    بحبك اوي يا نيللي 🤍<br>
+    I love your presence with me more than I can explain<br><br>
+    Sohayb_Mohammed<br>
+    8 / 11 / 2005
+  </p>
+</div>
+
+<script>
+/* تحقق */
+function enter() {
+  if (
+    name.value.toLowerCase() === "lyly" &&
+    date.value === "08/11/2005"
+  ) {
+    login.style.display = "none";
+    content.style.display = "block";
+    music.volume = 0.1;
+    music.play();
+    fadeMusic();
+    writeText();
+  }
+}
+
+/* تعلية الصوت */
+function fadeMusic() {
+  setInterval(() => {
+    if (music.volume < 0.6) music.volume += 0.01;
+  }, 300);
+}
+
+/* كتابة الرسائل */
+const lines = [
+  "I don’t know how to explain it",
+  "but with you everything feels softer",
+  "safer and more real",
+
+  "ليلـو انا مش عارف ازاي ممكن اوصف اللي جوايا...",
+  "..."
+
+  // هنا هتحط باقي الرسالة العربي
+];
+
+function writeText() {
+  let i = 0;
+  const box = document.getElementById("text");
+  const interval = setInterval(() => {
+    if (i < lines.length) {
+      const d = document.createElement("div");
+      d.className = "line";
+      d.innerText = lines[i];
+      box.appendChild(d);
+      i++;
+    } else {
+      clearInterval(interval);
+      loadGallery();
+    }
+  }, 1800);
+}
+
+/* صور */
+function loadGallery() {
+  const g = document.getElementById("gallery");
+  for (let i = 1; i <= 19; i++) {
+    const img = document.createElement("img");
+    img.src = `images/${i}.jpg`;
+    g.appendChild(img);
+  }
+  loadVideos();
+}
+
+/* فيديو */
+function loadVideos() {
+  const v = document.getElementById("videos");
+  for (let i = 1; i <= 11; i++) {
+    const vid = document.createElement("video");
+    vid.src = `videos/${i}.mp4`;
+    vid.controls = true;
+    vid.muted = true;
+    v.appendChild(vid);
+  }
+}
+
+/* خلفية */
+let bgIndex = 1;
+setInterval(() => {
+  bg.style.backgroundImage = `url(images/${bgIndex}.jpg)`;
+  bgIndex = bgIndex < 19 ? bgIndex + 1 : 1;
+}, 6000);
+</script>
+
+</body>
+</html>
